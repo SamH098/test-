@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            width: 300px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 300px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Phone Number</h1>
+        <form id="searchForm">
+            <input type="text" id="phoneNumber" placeholder="(123)-456-7890" maxlength="14" required>
+            <br>
+            <button type="submit">Search</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Hardcoded list of phone numbers and their corresponding letter-based image names
+        const phoneNumbers = {
+            "(123)-456-7890": "a.jpg",
+            "(234)-567-8901": "b.jpg",
+            "(345)-678-9012": "c.jpg"
+            // Add more phone numbers here, mapping them to the next letter in the alphabet
+        };
+
+        const defaultImage = "images/default.jpg";  // Default image when number not found
+
+        // Function to format input to phone number format (123)-456-7890
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        phoneNumberInput.addEventListener('input', function (e) {
+            let value = phoneNumberInput.value.replace(/\D/g, ''); // Remove all non-digit characters
+            if (value.length > 3 && value.length <= 6) {
+                value = `(${value.slice(0, 3)})-${value.slice(3)}`;
+            } else if (value.length > 6) {
+                value = `(${value.slice(0, 3)})-${value.slice(3, 6)}-${value.slice(6)}`;
+            }
+            phoneNumberInput.value = value;
+        });
+
+        // Handling the form submission
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const phoneNumber = phoneNumberInput.value;
+
+            // Check if the phone number exists in the list
+            const imageName = phoneNumbers[phoneNumber] || "default.jpg";  // Default to 'default.jpg' if not found
+
+            // Display the corresponding image
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<img src="images/${imageName}" alt="Phone Number Image">`;
+        });
+    </script>
+</body>
+</html>
